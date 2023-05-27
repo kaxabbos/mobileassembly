@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Товары</title>
+</head>
+
+<head th:insert="blocks/head :: head"></head>
+
+<body id="page-top">
+<div id="wrapper">
+    <nav th:insert="blocks/nav :: nav"
+         class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 accent">
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <div th:insert="blocks/navSecond :: navSecond"></div>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4">Товары</h3>
+                <div class="row g-0 row-cols-5 d-lg-flex">
+                    <div th:each="p : ${products}" class="col device-col">
+                        <img th:src="'/img/' + ${p.file}"
+                             class="d-lg-flex justify-content-lg-center align-items-lg-center device-col-img">
+                        <span class="d-flex d-lg-flex device-attributes-span">Наименование:&nbsp;
+                            <span th:text="${p.name}"></span>
+                        </span>
+                        <span class="d-flex d-lg-flex device-attributes-span">Цена:&nbsp;
+                            <span th:text="${p.price}"></span>
+                        </span>
+                        <span class="d-flex d-lg-flex device-attributes-span">Количество:&nbsp;
+                            <span th:text="${p.count}"></span>
+                        </span>
+                        <form th:if="${role != 'NOT'}" th:action="'/products/buy/' + ${p.id}" method="post" class="mt-1 mb-1" style="padding: 0 5%">
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" type="number" name="count" min="1" th:max="${p.count}"
+                                           step="1" required>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-primary" type="submit">Купить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <a th:if="${role == 'SALES_MANAGER'}"
+                           th:href="'/products/edit/' + ${p.id}"
+                           class="btn btn-primary device-attributes-button">Редактировать</a>
+                        <a th:if="${role == 'SALES_MANAGER'}"
+                           th:href="'/products/delete/' + ${p.id}"
+                           class="btn btn-danger device-attributes-button">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:insert="blocks/footer :: footer"
+                class="bg-white d-lg-flex justify-content-lg-center align-items-lg-center sticky-footer mxh-40px">
+        </footer>
+    </div>
+</div>
+<script src="/js/min.js"></script>
+<script src="/js/theme.js"></script>
+</body>
+
+</html>
